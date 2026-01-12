@@ -4,35 +4,48 @@ import sys
 from pathlib import Path
 from typing import Dict
 
-from a4s_plugin_interface import EvaluationPluginInterface
+from a4s_plugin_interface.base_evaluation_plugin import BaseEvaluationPlugin
 
 core_plugin_path = 'plugins/core'
 
+def find_module_directory(pkg_root: Path) -> Path | None:
+    if (pkg_root / "__init__.py").exists():
+        return pkg_root
+
+    for subdirectory in pkg_root.iterdir():
+        if subdirectory.is_dir():
+
+            if (subdirectory / "__init__.py").exists():
+                return subdirectory
+
+    return None
+
 class Loader(str):
     def __init__(self, dev_plugin_path: str):
+        if not dev_plugin_path:
+            return
         self.plugin_dirs = [Path(dev_plugin_path), Path(core_plugin_path)]
-        self.plugins: Dict[str, type[EvaluationPluginInterface]] = {}
+        self.plugins: Dict[str, type[BaseEvaluationPlugin]] = {}
         self.load_plugin()
 
     def load_plugin(self):
         for plugin_dir in self.plugin_dirs:
             for pkg_root in plugin_dir.iterdir():
-                if pkg_root.is_dir():
-                    module_folder = pkg_root / pkg_root.name.replace("-", "_")
-
+                module_path = find_module_directory(pkg_root)
+                if module_path:
                     sys.path.insert(0, str(pkg_root))
 
-                    module_name = module_folder.name
+                    module_name = module_path.name
                     module = importlib.import_module(module_name)
 
                     for _, obj in inspect.getmembers(module, inspect.isclass):
-                        if issubclass(obj, EvaluationPluginInterface) and obj is not EvaluationPluginInterface:
+                        if issubclass(obj, BaseEvaluationPlugin) and obj is not BaseEvaluationPlugin:
                             self.plugins[obj.__name__] = obj
 
     def list_plugins(self):
         return self.plugins
 
-    def load(self, name: str) -> EvaluationPluginInterface:
+    def load(self, name: str) -> BaseEvaluationPlugin:
         cls = self.plugins.get(name)
         if not cls:
             raise KeyError(f"Plugin {name} not found")
