@@ -22,8 +22,8 @@ def find_module_directory(pkg_root: Path) -> Path | None:
     return None
 
 class Loader(str):
-    def __init__(self, plugin_path: str):
-        self.plugin_dirs = [Path(plugin_path), Path(plugin_path)]
+    def __init__(self, local_plugin_path: str):
+        self.plugin_dirs = [Path(local_plugin_path), Path(plugin_path)]
         self.plugins: Dict[str, type[BaseEvaluationPlugin]] = {}
         self.load_plugin()
 
