@@ -13,10 +13,11 @@ def find_module_directory(pkg_root: Path) -> Path | None:
         return pkg_root
 
     for subdirectory in pkg_root.iterdir():
-        if subdirectory.is_dir():
+        if not subdirectory.is_dir():
+            continue
 
-            if (subdirectory / "__init__.py").exists():
-                return subdirectory
+        if (subdirectory / "__init__.py").exists():
+            return subdirectory
 
     return None
 
@@ -31,6 +32,8 @@ class Loader(str):
     def load_plugin(self):
         for plugin_dir in self.plugin_dirs:
             for pkg_root in plugin_dir.iterdir():
+                if not pkg_root.is_dir():
+                    continue
                 module_path = find_module_directory(pkg_root)
                 if module_path:
                     sys.path.insert(0, str(pkg_root))
