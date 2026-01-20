@@ -37,7 +37,6 @@ class Loader():
         self._find_plugins()
 
     def _find_plugins(self):
-        logger.info(f"Loading plugins from {self.plugin_dirs}")
         self.plugins = {}
         for plugin_dir in self.plugin_dirs:
             if not plugin_dir.exists() or not plugin_dir.is_dir():
@@ -68,6 +67,8 @@ class Loader():
                                 self.plugins[obj.__name__] = obj
                     except Exception as e:
                         logger.error(f"Failed to load plugin {module_name} from {pkg_root}: {e}")
+
+        self.plugins["test"] = BaseEvaluationPlugin
 
 
     def list_plugins(self):
