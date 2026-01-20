@@ -68,8 +68,6 @@ class Loader():
                     except Exception as e:
                         logger.error(f"Failed to load plugin {module_name} from {pkg_root}: {e}")
 
-        self.plugins["test"] = BaseEvaluationPlugin
-
 
     def list_plugins(self):
         self._find_plugins()
