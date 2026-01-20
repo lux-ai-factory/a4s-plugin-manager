@@ -58,9 +58,14 @@ class Loader():
                     try:
                         # Reload to capture changes in code during runtime
                         if module_name in sys.modules:
-                            module = importlib.reload(sys.modules[module_name])
-                        else:
-                            module = importlib.import_module(module_name)
+                            modules_to_remove = [
+                                m for m in sys.modules
+                                if m == module_name or m.startswith(f"{module_name}.")
+                            ]
+                            for m in modules_to_remove:
+                                del sys.modules[m]
+
+                        module = importlib.import_module(module_name)
 
                         for _, obj in inspect.getmembers(module, inspect.isclass):
                             if issubclass(obj, BaseEvaluationPlugin) and obj is not BaseEvaluationPlugin:
