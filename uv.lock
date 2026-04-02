@@ -5,7 +5,7 @@ requires-python = ">=3.12"
 [[package]]
 name = "a4s-plugin-interface"
 version = "0.1.0"
-source = { git = "https://github.com/lux-ai-factory/a4s-plugin-interface.git#5dafc26dff5a39ae15d73079109213b746dce2b7" }
+source = { git = "https://github.com/lux-ai-factory/a4s-plugin-interface.git?rev=dev#0a0663458bf872fba214badacdeb4610b2741daf" }
 dependencies = [
     { name = "pydantic" },
     { name = "rich" },
@@ -20,7 +20,7 @@ dependencies = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "a4s-plugin-interface", git = "https://github.com/lux-ai-factory/a4s-plugin-interface.git" }]
+requires-dist = [{ name = "a4s-plugin-interface", git = "https://github.com/lux-ai-factory/a4s-plugin-interface.git?rev=dev" }]
 
 [[package]]
 name = "annotated-types"
