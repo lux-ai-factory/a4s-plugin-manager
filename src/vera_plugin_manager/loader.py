@@ -40,6 +40,7 @@ class Loader:
 
     def _find_plugins(self):
         self.plugins = {}
+        self.packages = {}
         for plugin_dir in self.plugin_dirs:
             if not plugin_dir.exists() or not plugin_dir.is_dir():
                 continue
@@ -76,6 +77,7 @@ class Loader:
                                 and obj is not BaseEvaluationPlugin
                             ):
                                 self.plugins[obj.display_name] = obj
+                                self.packages[obj.display_name] = pkg_root
                     except Exception as e:
                         logger.error(
                             f"Failed to load plugin {module_name} from {pkg_root}: {e}"
@@ -91,3 +93,7 @@ class Loader:
         if not cls:
             raise KeyError(f"Plugin {name} not found")
         return cls()
+
+    def get_package_path(self, name: str) -> Path | None:
+        self._find_plugins()
+        return self.packages.get(name)
