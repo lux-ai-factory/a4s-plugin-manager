@@ -163,8 +163,8 @@ wheels = [
 
 [[package]]
 name = "vera-plugin-interface"
-version = "0.2.1"
-source = { git = "https://github.com/lux-ai-factory/vera-plugin-interface.git#55d192ea6a23aedc172940c9bb57067f29a5c94c" }
+version = "0.2.2"
+source = { git = "https://github.com/lux-ai-factory/vera-plugin-interface.git?tag=v0.2.2#d0b5df08aed9bbf2e1f2bd3066cf03c5c106bb8c" }
 dependencies = [
     { name = "pydantic" },
     { name = "rich" },
@@ -172,11 +172,11 @@ dependencies = [
 
 [[package]]
 name = "vera-plugin-manager"
-version = "0.2.1"
+version = "0.2.2"
 source = { virtual = "." }
 dependencies = [
     { name = "vera-plugin-interface" },
 ]
 
 [package.metadata]
-requires-dist = [{ name = "vera-plugin-interface", git = "https://github.com/lux-ai-factory/vera-plugin-interface.git" }]
+requires-dist = [{ name = "vera-plugin-interface", git = "https://github.com/lux-ai-factory/vera-plugin-interface.git?tag=v0.2.2" }]
